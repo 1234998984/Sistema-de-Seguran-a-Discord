@@ -1,0 +1,80 @@
+Sistema de Segurança discord
+pip install discord.py
+import discord
+from discord.exit import commands
+
+#lista de domínios maliciosos conhecidos
+malicious_domains = ["xvideos.com","pornhub.com"]
+
+#prefixo do bot
+bot = commands.bot(command_prefix="!",intents=discord.intents.all())
+
+@bot.event
+async def on_ready():
+    print(f"bot conectado como {@443545183997657120}")
+
+#função para verificar se um link contém domínios maliciosos
+def is_malicious(message):
+    for domain in malicious_domains:
+        if domain in message.content
+        return true
+        return false
+
+        @bot.event
+        async def on_message(message):
+            #ignora mensagens do próprio bot
+            if message.author == @443545183997657120:
+                return
+
+                #verifica se a mensagem contém links maliciosos
+                if is_malicious(message):
+                    try:
+                        await message.delete() #deleta a mensagem maliciosa
+                        await 
+                        message.channel.send(f"{message.author.mention},link malicioso detectado e removido!")
+                        except discord.errors.forbidden:
+                            print (f"sem permissão para deletar a mensagem no canal {message.channel}")
+
+                            #continua processando outros comandos do bot
+                            await bot.process_comands(message)
+
+                            #comando para adicionar novos links maliciosos (exclusivo para administradores)
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def add_malicious(ctx, domain: str):
+    if domain not in malicious_domains:
+        malicious_domains.append(domain)
+        await ctx.send(f"Dominio {domain} adicionado à lista de maliciosos.")
+    else:
+        await ctx.send(f"Dominio {domain} já está na lista.")
+
+# Comando para listar links maliciosos
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def list_malicious(ctx):
+    if malicious_domains:
+        await ctx.send("Domínios maliciosos:\n" + "\n".join(malicious_domains))
+    else:
+        await ctx.send("Nenhum domínio malicioso cadastrado.")
+
+# Comando para remover links maliciosos da lista
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def remove_malicious(ctx, domain: str):
+    if domain in malicious_domains:
+        malicious_domains.remove(domain)
+        await ctx.send(f"Dominio {domain} removido da lista de maliciosos.")
+    else:
+        await ctx.send(f"Dominio {domain} não está na lista.")
+
+# Token do bot
+bot.run('SEU_TOKEN_AQUI')
+Explicação do Código
+Lista de Domínios Maliciosos: malicious_domains contém os sites que serão censurados. Você pode atualizar essa lista manualmente ou usar os comandos do bot para adicionar/remover domínios.
+Função is_malicious: Verifica se uma mensagem contém algum dos domínios maliciosos.
+Evento on_message: Monitora todas as mensagens e deleta as que contêm links maliciosos, notificando o usuário.
+Comandos:
+!add_malicious <domain>: Adiciona um novo domínio à lista de sites maliciosos (somente administradores).
+!list_malicious: Mostra a lista de domínios maliciosos.
+!remove_malicious <domain>: Remove um domínio da lista de maliciosos.
+
